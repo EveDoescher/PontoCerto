@@ -2,7 +2,12 @@
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { Plus, Trash2, Palette, CircleAlert, X } from 'lucide-vue-next'
-import { CORES_GRUPOS, obterTemaCor, obterNaipePorIndice } from '../composables/useGameStore'
+import {
+  CORES_GRUPOS,
+  obterTemaCor,
+  obterNaipePorIndice,
+  obterNomePadraoGrupo,
+} from '../composables/useGameStore'
 import type { ModoSessao } from '../types'
 
 export interface RascunhoGrupo {
@@ -29,7 +34,10 @@ function adicionarGrupo() {
   const novos = [
     ...props.grupos,
     {
-      nome: `Grupo ${idx + 1}`,
+      nome: obterNomePadraoGrupo(
+        idx,
+        props.grupos.map((g) => g.nome)
+      ),
       cor: CORES_GRUPOS[idx % CORES_GRUPOS.length]!.id,
     },
   ]
@@ -111,7 +119,7 @@ function alternarCorGrupo(index: number) {
           @input="atualizarNomeGrupo(idx, ($event.target as HTMLInputElement).value)"
           type="text"
           :aria-label="`Nome do grupo ${idx + 1}`"
-          :placeholder="`Grupo ${idx + 1}`"
+          :placeholder="obterNomePadraoGrupo(idx)"
           class="flex-1 min-w-0 bg-transparent text-white placeholder-white/60 fonte-display font-extrabold text-lg focus:outline-none"
         />
 

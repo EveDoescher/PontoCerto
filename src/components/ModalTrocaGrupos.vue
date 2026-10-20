@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { UserPlus, X } from 'lucide-vue-next'
-import { obterTemaCor } from '../composables/useGameStore'
+import { obterTemaCor, obterNomePadraoGrupo } from '../composables/useGameStore'
 import type { SessaoJogo } from '../types'
 
 const props = defineProps<{
@@ -41,7 +41,6 @@ function alternarSelecao(grupoId: string) {
 }
 
 function adicionarGrupo() {
-  if (!nomeNovoGrupo.value.trim()) return
   emit('criar-grupo', nomeNovoGrupo.value.trim())
   const ultimo = props.sessao.grupos[props.sessao.grupos.length - 1]
   if (ultimo && !selecionadosIds.value.includes(ultimo.id)) {
@@ -99,7 +98,7 @@ function confirmar() {
         <input
           v-model="nomeNovoGrupo"
           type="text"
-          placeholder="Adicionar novo grupo..."
+          :placeholder="`Novo grupo (padrão: ${obterNomePadraoGrupo(sessao.grupos.length, sessao.grupos.map((g) => g.nome))})`"
           @keydown.enter.prevent="adicionarGrupo"
           class="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl bg-[#12100e] border border-[#332c27] text-[#faf6f0] text-sm font-bold focus:outline-none focus:border-amber-400"
         />

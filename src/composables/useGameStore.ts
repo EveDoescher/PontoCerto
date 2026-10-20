@@ -19,6 +19,31 @@ export const NAIPES_BARALHO = [
   'mdi:cards-diamond',
 ] as const
 
+export const NOMES_PADRAO_GRUPOS = [
+  'Nós',
+  'Eles',
+  'Vós',
+  'Elas',
+  'Vocês',
+  'Outros',
+  'Aqueles',
+  'Estes',
+] as const
+
+export function obterNomePadraoGrupo(
+  indice: number,
+  nomesExistentes: string[] = []
+): string {
+  if (nomesExistentes.length > 0) {
+    const usados = new Set(nomesExistentes.map((n) => n.trim().toLowerCase()))
+    const disponivel = NOMES_PADRAO_GRUPOS.find(
+      (nome) => !usados.has(nome.toLowerCase())
+    )
+    if (disponivel) return disponivel
+  }
+  return NOMES_PADRAO_GRUPOS[indice] ?? `Grupo ${indice + 1}`
+}
+
 export function obterNaipePorIndice(indice: number): string {
   return NAIPES_BARALHO[Math.abs(indice) % NAIPES_BARALHO.length]!
 }
@@ -233,7 +258,7 @@ export function useGameStore() {
     const agora = new Date().toISOString()
     const gruposCriados: Grupo[] = config.grupos.map((g, idx) => ({
       id: `grp_${Date.now()}_${idx}_${Math.random().toString(36).slice(2, 6)}`,
-      nome: g.nome.trim() || `Grupo ${idx + 1}`,
+      nome: g.nome.trim() || obterNomePadraoGrupo(idx),
       cor: g.cor || CORES_GRUPOS[idx % CORES_GRUPOS.length]!.id,
       vitorias: 0,
     }))
@@ -368,7 +393,12 @@ export function useGameStore() {
     const idx = s.grupos.length
     const novoGrupo: Grupo = {
       id: `grp_${Date.now()}_${idx}_${Math.random().toString(36).slice(2, 6)}`,
-      nome: nome.trim() || `Grupo ${idx + 1}`,
+      nome:
+        nome.trim() ||
+        obterNomePadraoGrupo(
+          idx,
+          s.grupos.map((g) => g.nome)
+        ),
       cor: cor || CORES_GRUPOS[idx % CORES_GRUPOS.length]!.id,
       vitorias: 0,
     }
@@ -526,6 +556,17 @@ export function useGameStore() {
     sessaoAtualId.value = null
   }
 
+  function importarHistorico(novasSessoes: SessaoJogo[]) {
+    sessoes.value = novasSessoes
+    if (
+      !sessaoAtualId.value ||
+      !novasSessoes.some((s) => s.id === sessaoAtualId.value)
+    ) {
+      const ativa = novasSessoes.find((s) => s.status === 'ativa')
+      sessaoAtualId.value = ativa ? ativa.id : null
+    }
+  }
+
   return {
     sessoes,
     sessaoAtualId,
@@ -541,5 +582,6 @@ export function useGameStore() {
     retomarSessao,
     excluirSessao,
     limparTodoHistorico,
+    importarHistorico,
   }
 }

@@ -4,7 +4,12 @@ import { Play } from 'lucide-vue-next'
 import SeletorPredefinicoes from './SeletorPredefinicoes.vue'
 import ConfiguradorRegras from './ConfiguradorRegras.vue'
 import GerenciadorGruposSetup, { type RascunhoGrupo } from './GerenciadorGruposSetup.vue'
-import { PREDEFINICOES_JOGO, CORES_GRUPOS, useGameStore } from '../composables/useGameStore'
+import {
+  PREDEFINICOES_JOGO,
+  CORES_GRUPOS,
+  obterNomePadraoGrupo,
+  useGameStore,
+} from '../composables/useGameStore'
 import type { ModoSessao, PredefinicaoJogo } from '../types'
 
 const emit = defineEmits<{
@@ -41,7 +46,10 @@ function aplicarPredefinicao(predefinicao: PredefinicaoJogo) {
   while (grupos.value.length < predefinicao.gruposPadrao) {
     const idx = grupos.value.length
     grupos.value.push({
-      nome: `Grupo ${idx + 1}`,
+      nome: obterNomePadraoGrupo(
+        idx,
+        grupos.value.map((g) => g.nome)
+      ),
       cor: CORES_GRUPOS[idx % CORES_GRUPOS.length]!.id,
     })
   }
@@ -62,7 +70,7 @@ function iniciarJogo() {
     modo: modoFinal,
     tamanhoMesa: Math.min(Math.max(2, tamanhoMesa.value), grupos.value.length),
     grupos: grupos.value.map((g, i) => ({
-      nome: g.nome.trim() || `Grupo ${i + 1}`,
+      nome: g.nome.trim() || obterNomePadraoGrupo(i),
       cor: g.cor,
     })),
   })
