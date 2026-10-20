@@ -1,0 +1,163 @@
+@import "tailwindcss";
+
+:root {
+  --fundo: #12100e;
+  --superficie: #1e1a17;
+  --superficie-hover: #2a2420;
+  --borda: #332c27;
+  --texto: #faf6f0;
+  --texto-apoio: #b5a898;
+  --destaque: #f59e0b;
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100dvh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Chivo', system-ui, -apple-system, sans-serif;
+    background-color: var(--fundo);
+    color: var(--texto);
+    caret-color: var(--destaque);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--destaque);
+    color: #1c1305;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--destaque);
+    outline-offset: 2px;
+  }
+}
+
+.fonte-display {
+  font-family: 'Changa', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.numeral-placar {
+  font-family: 'Changa', sans-serif;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+/* Container query apenas em inline-size para NUNCA colapsar ou cortar a altura */
+.quadrado-container {
+  container-type: inline-size;
+  container-name: quadrado;
+}
+
+.numeral-gigante {
+  font-size: clamp(3.75rem, 22cqi, 8.5rem);
+  line-height: 0.95;
+}
+
+.nome-grupo-fluido {
+  font-size: clamp(1.25rem, 6.5cqi, 2.25rem);
+  line-height: 1.1;
+}
+
+/* Feedback físico ao tocar no quadrado */
+.quadrado-tactil {
+  user-select: none;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.22), inset 0 -4px 0 rgba(0, 0, 0, 0.28);
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), filter 0.1s ease;
+}
+
+.quadrado-tactil:active {
+  transform: scale(0.99);
+  filter: brightness(0.93);
+}
+
+/* Animação elástica do número ao somar ponto */
+@keyframes pulo-ponto {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.16) translateY(-3px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animar-pulo-ponto {
+  animation: pulo-ponto 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Número flutuante (+1, +3, etc.) onde o dedo tocou */
+@keyframes flutuar-tento {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -10%) scale(0.7);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -70%) scale(1.12);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -135%) scale(0.95);
+  }
+}
+
+.animar-flutuar-tento {
+  animation: flutuar-tento 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Onda circular rápida no ponto do toque */
+@keyframes onda-toque-placa {
+  0% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(0.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.2);
+  }
+}
+
+.animar-onda-toque-placa {
+  animation: onda-toque-placa 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Entrada de modal */
+@keyframes entrada-folha {
+  0% {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animar-entrada-folha {
+  animation: entrada-folha 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animar-pulo-ponto,
+  .animar-flutuar-tento,
+  .animar-onda-toque-placa,
+  .animar-entrada-folha {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .quadrado-tactil {
+    transition-duration: 0.01ms !important;
+  }
+}
