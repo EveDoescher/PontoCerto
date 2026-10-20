@@ -39,7 +39,7 @@ const { somAtivo, alternarSom } = useAudioVitoria()
         >
           <Volume2 v-if="somAtivo" class="w-4 h-4 text-amber-400" />
           <VolumeX v-else class="w-4 h-4 text-[#b5a898]" />
-          <span>{{ somAtivo ? 'Som ON' : 'Sem som' }}</span>
+          <span>{{ somAtivo ? 'Som' : 'Sem som' }}</span>
         </button>
       </div>
 

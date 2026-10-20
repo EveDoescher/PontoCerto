@@ -141,7 +141,7 @@ function aoTocarMenos(evento: MouseEvent) {
             class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-amber-400 text-amber-950 text-[11px] font-black uppercase"
           >
             <Flame class="w-3 h-3 fill-current" />
-            <span>No bico</span>
+            <span>Quase lá</span>
           </span>
 
           <span
