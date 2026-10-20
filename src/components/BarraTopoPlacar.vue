@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 import { Icon } from '@iconify/vue'
 import {
   RotateCcw,
@@ -39,17 +39,63 @@ const { somAtivo, alternarSom } = useAudioVitoria()
 const agoraMs = ref(Date.now())
 let intervaloCronometro: ReturnType<typeof setInterval> | null = null
 
+const refHeader = ref<HTMLElement | null>(null)
+const refBotaoMesa = ref<HTMLElement | null>(null)
+const refMedidorRegras = ref<HTMLElement | null>(null)
+const refTimer = ref<HTMLElement | null>(null)
+const cabeJogoERegras = ref(true)
+
+let observadorTamanho: ResizeObserver | null = null
+
+function verificarEspacoDisponivel() {
+  if (!refHeader.value || !refBotaoMesa.value || !refMedidorRegras.value || !refTimer.value) {
+    return
+  }
+  const estiloHeader = getComputedStyle(refHeader.value)
+  const paddingHorizontal =
+    (parseFloat(estiloHeader.paddingLeft) || 0) + (parseFloat(estiloHeader.paddingRight) || 0)
+  const larguraDisponivel = refHeader.value.clientWidth - paddingHorizontal
+
+  const larguraMesa = refBotaoMesa.value.offsetWidth
+  const larguraRegras = refMedidorRegras.value.offsetWidth
+  const larguraTimer = refTimer.value.offsetWidth
+  const gaps = 14 // 2 gaps de 6px (gap-1.5) + folga de segurança
+
+  cabeJogoERegras.value = larguraMesa + larguraRegras + larguraTimer + gaps <= larguraDisponivel
+}
+
 onMounted(() => {
   intervaloCronometro = setInterval(() => {
     agoraMs.value = Date.now()
   }, 1000)
+
+  verificarEspacoDisponivel()
+  if (typeof ResizeObserver !== 'undefined' && refHeader.value) {
+    observadorTamanho = new ResizeObserver(() => {
+      verificarEspacoDisponivel()
+    })
+    observadorTamanho.observe(refHeader.value)
+  }
+  window.addEventListener('resize', verificarEspacoDisponivel)
 })
 
 onUnmounted(() => {
   if (intervaloCronometro) {
     clearInterval(intervaloCronometro)
   }
+  if (observadorTamanho) {
+    observadorTamanho.disconnect()
+  }
+  window.removeEventListener('resize', verificarEspacoDisponivel)
 })
+
+watch(
+  () => [props.sessao.titulo, props.sessao.pontosVitoria],
+  async () => {
+    await nextTick()
+    verificarEspacoDisponivel()
+  }
+)
 
 const tempoPartidaFormatado = computed(() => {
   const segs = calcularSegundosDecorridos(
@@ -65,41 +111,62 @@ const iconeSessao = computed(() =>
 </script>
 
 <template>
-  <header class="w-full bg-[#1e1a17] border-b-2 border-[#332c27] px-3 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0 z-30">
-    <!-- Esquerda: Nova Mesa + Nome do Jogo/Regras (com ícone SVG do jogo) + Cronômetro HH:MM:SS -->
-    <div class="flex flex-wrap items-center gap-1.5 min-w-0">
+  <header
+    ref="refHeader"
+    class="relative w-full bg-[#1e1a17] border-b-2 border-[#332c27] px-2.5 sm:px-3 py-2 flex flex-wrap items-center justify-between gap-2 shrink-0 z-30"
+  >
+    <!-- Medidor invisível para saber a largura real sem truncar do botão de Jogo/Regras -->
+    <div
+      ref="refMedidorRegras"
+      aria-hidden="true"
+      class="pointer-events-none fixed -top-96 left-0 opacity-0 px-3 py-1.5 text-xs font-extrabold flex items-center gap-1.5 whitespace-nowrap"
+    >
+      <Icon :icon="iconeSessao" class="w-4 h-4 shrink-0" />
+      <span class="fonte-display text-sm font-extrabold whitespace-nowrap">
+        {{ sessao.titulo }}
+      </span>
+      <span class="numeral-placar px-1.5 py-0.5 text-xs font-black shrink-0 whitespace-nowrap">
+        {{ sessao.pontosVitoria }} pts
+      </span>
+    </div>
+
+    <!-- Esquerda: Nova Mesa + Nome do Jogo/Regras (aparece sempre que couber ao lado sem "...") + Cronômetro HH:MM:SS -->
+    <div class="flex flex-wrap items-center gap-1.5">
       <button
+        ref="refBotaoMesa"
         type="button"
         @click="emit('novo-jogo')"
         title="Configurar nova mesa"
         class="min-h-[40px] px-3 py-1.5 rounded-xl bg-[#12100e] hover:bg-[#2a2420] border border-[#332c27] text-amber-400 text-xs font-extrabold flex items-center gap-1.5 cursor-pointer shrink-0 transition"
       >
         <PlusCircle class="w-4 h-4 shrink-0" />
-        <span>Nova Mesa</span>
+        <span class="whitespace-nowrap">Nova Mesa</span>
       </button>
 
       <button
+        v-if="cabeJogoERegras"
         type="button"
         @click="emit('abrir-regras')"
         title="Ajustar meta e passo de pontos"
-        class="min-h-[40px] px-3 py-1.5 rounded-xl bg-[#12100e] hover:bg-[#2a2420] border border-[#332c27] text-xs font-extrabold text-[#faf6f0] flex items-center gap-1.5 min-w-0 cursor-pointer transition"
+        class="min-h-[40px] px-3 py-1.5 rounded-xl bg-[#12100e] hover:bg-[#2a2420] border border-[#332c27] text-xs font-extrabold text-[#faf6f0] flex items-center gap-1.5 shrink-0 cursor-pointer transition"
       >
         <Icon :icon="iconeSessao" class="w-4 h-4 text-amber-400 shrink-0" />
-        <span class="fonte-display text-sm font-extrabold truncate max-w-[110px] sm:max-w-[180px]">
+        <span class="fonte-display text-sm font-extrabold whitespace-nowrap">
           {{ sessao.titulo }}
         </span>
-        <span class="numeral-placar px-1.5 py-0.5 rounded-md bg-amber-400 text-amber-950 font-black shrink-0">
+        <span class="numeral-placar px-1.5 py-0.5 rounded-md bg-amber-400 text-amber-950 font-black shrink-0 whitespace-nowrap">
           {{ sessao.pontosVitoria }} pts
         </span>
       </button>
 
-      <!-- Timer da Partida (HH:MM:SS) ao lado do nome do jogo e regras -->
+      <!-- Timer da Partida (HH:MM:SS) ao lado (e desce para baixo de Nova Mesa apenas se a tela for muito pequena) -->
       <div
+        ref="refTimer"
         title="Duração da partida atual"
         class="min-h-[40px] px-3 py-1.5 rounded-xl bg-[#12100e] border border-[#332c27] text-[#faf6f0] text-xs font-extrabold flex items-center gap-1.5 shrink-0"
       >
         <Timer class="w-4 h-4 text-amber-400 shrink-0" />
-        <span class="numeral-placar text-sm font-extrabold tracking-wide text-amber-400">
+        <span class="numeral-placar text-sm font-extrabold tracking-wide text-amber-400 whitespace-nowrap">
           {{ tempoPartidaFormatado }}
         </span>
       </div>

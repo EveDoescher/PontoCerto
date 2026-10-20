@@ -28,7 +28,7 @@ const { somAtivo, alternarSom } = useAudioVitoria()
           class="fonte-display text-xl sm:text-2xl font-extrabold tracking-tight text-amber-400 cursor-pointer leading-none flex items-center gap-2"
         >
           <Icon icon="mdi:cards-playing-spade-multiple" class="w-6 h-6 shrink-0" />
-          <span>PONTOCERTO</span>
+          <span>PLACARCERTO</span>
         </h1>
 
         <button

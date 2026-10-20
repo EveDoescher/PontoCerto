@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
-import { Plus, Trash2, Palette } from 'lucide-vue-next'
+import { Plus, Trash2, Palette, CircleAlert, X } from 'lucide-vue-next'
 import { CORES_GRUPOS, obterTemaCor, obterNaipePorIndice } from '../composables/useGameStore'
 import type { ModoSessao } from '../types'
 
@@ -20,6 +21,8 @@ const emit = defineEmits<{
   (e: 'update:modo', valor: ModoSessao): void
   (e: 'update:tamanhoMesa', valor: number): void
 }>()
+
+const explicacaoFilaAberta = ref(false)
 
 function adicionarGrupo() {
   const idx = props.grupos.length
@@ -150,31 +153,108 @@ function alternarCorGrupo(index: number) {
               : 'text-[#b5a898] hover:text-[#faf6f0]',
           ]"
         >
-          Fila ("Quem ganha fica")
+          Quem ganha fica
         </button>
       </div>
 
-      <div
-        v-if="modo === 'fila'"
-        class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs"
-      >
-        <span class="text-[#b5a898] font-bold">Quantos grupos na mesa por vez?</span>
-        <div class="flex gap-1.5">
+      <div v-if="modo === 'fila'" class="space-y-2 pt-1 text-xs">
+        <!-- Botão Como Funciona (!) antes de quantos grupos na mesa por vez -->
+        <div>
           <button
-            v-for="n in [2, 3, 4]"
-            :key="n"
             type="button"
-            @click="emit('update:tamanhoMesa', n)"
-            :class="[
-              'px-3 py-1.5 rounded-lg numeral-placar font-extrabold border cursor-pointer',
-              tamanhoMesa === n
-                ? 'bg-amber-400 text-amber-950 border-amber-300'
-                : 'bg-[#1e1a17] text-[#b5a898] border-[#332c27]',
-            ]"
+            @click="explicacaoFilaAberta = true"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-amber-400 font-extrabold text-xs cursor-pointer transition"
           >
-            {{ n }} na mesa
+            <CircleAlert class="w-4 h-4 shrink-0" />
+            <span>Como Funciona</span>
           </button>
         </div>
+
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <span class="text-[#b5a898] font-bold">Quantos grupos na mesa por vez?</span>
+          <div class="flex gap-1.5">
+            <button
+              v-for="n in [2, 3, 4]"
+              :key="n"
+              type="button"
+              @click="emit('update:tamanhoMesa', n)"
+              :class="[
+                'px-3 py-1.5 rounded-lg numeral-placar font-extrabold border cursor-pointer',
+                tamanhoMesa === n
+                  ? 'bg-amber-400 text-amber-950 border-amber-300'
+                  : 'bg-[#1e1a17] text-[#b5a898] border-[#332c27]',
+              ]"
+            >
+              {{ n }} na mesa
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Explicação simples do Modo Fila ("Quem ganha fica") -->
+    <div
+      v-if="explicacaoFilaAberta"
+      @click.self="explicacaoFilaAberta = false"
+      class="fixed inset-0 z-50 bg-black/80 flex items-end sm:items-center justify-center p-0 sm:p-4"
+    >
+      <div class="animar-entrada-folha bg-[#1e1a17] border-t sm:border border-[#332c27] rounded-t-3xl sm:rounded-3xl max-w-md w-full p-5 space-y-4 max-h-[92dvh] overflow-y-auto">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <CircleAlert class="w-5 h-5 text-amber-400 shrink-0" />
+            <h3 class="fonte-display text-xl font-extrabold text-[#faf6f0]">
+              Como funciona o "Quem ganha fica"
+            </h3>
+          </div>
+          <button
+            type="button"
+            @click="explicacaoFilaAberta = false"
+            class="p-1.5 rounded-full text-[#b5a898] hover:text-[#faf6f0] cursor-pointer shrink-0"
+          >
+            <X class="w-5 h-5" />
+          </button>
+        </div>
+
+        <p class="text-xs text-[#b5a898] leading-relaxed">
+          Ideal para quando tem mais duplas ou times presentes do que cabem jogando ao mesmo tempo (ex: 3 ou mais duplas no Truco/Dominó ou times na Pelada/Vôlei).
+        </p>
+
+        <div class="space-y-3 text-xs">
+          <div class="p-3 rounded-xl bg-[#12100e] border border-[#332c27] space-y-1">
+            <strong class="block text-amber-400 font-extrabold text-sm">
+              1. Quem joga e quem espera
+            </strong>
+            <p class="text-[#faf6f0] leading-relaxed">
+              Você cadastra todos os grupos (3 ou mais) e escolhe quantos jogam na mesa por vez. Os primeiros começam jogando e os outros ficam aguardando na fila.
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-[#12100e] border border-[#332c27] space-y-1">
+            <strong class="block text-amber-400 font-extrabold text-sm">
+              2. Durante o jogo
+            </strong>
+            <p class="text-[#faf6f0] leading-relaxed">
+              No placar aparecem apenas os grupos que estão jogando agora, e uma faixa no topo mostra a ordem de quem é o próximo da fila. Se chegar mais gente depois, você pode adicionar ou trocar os grupos a qualquer momento.
+            </p>
+          </div>
+
+          <div class="p-3 rounded-xl bg-[#12100e] border border-[#332c27] space-y-1">
+            <strong class="block text-amber-400 font-extrabold text-sm">
+              3. Quem ganha fica na mesa
+            </strong>
+            <p class="text-[#faf6f0] leading-relaxed">
+              Quando a partida acaba, quem venceu continua na mesa, quem perdeu vai para o fim da fila e o próximo grupo da fila entra para desafiar o vencedor! Se preferirem, também dá para repetir os mesmos grupos na hora.
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          @click="explicacaoFilaAberta = false"
+          class="w-full min-h-[48px] py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-amber-950 fonte-display font-extrabold text-base cursor-pointer"
+        >
+          ENTENDI
+        </button>
       </div>
     </div>
   </section>
