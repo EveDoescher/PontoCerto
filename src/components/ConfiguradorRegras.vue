@@ -39,10 +39,10 @@ function ajustarMeta(delta: number) {
 </script>
 
 <template>
-  <section class="space-y-4">
+  <section class="space-y-4 lg:space-y-6">
     <!-- Nome da Partida direto na linha -->
     <div>
-      <label for="campo-titulo" class="block text-xs font-bold text-[#b5a898] mb-1">
+      <label for="campo-titulo" class="block text-xs lg:text-sm font-bold text-[#b5a898] mb-1 lg:mb-1.5">
         Nome da sessão
       </label>
       <input
@@ -51,26 +51,26 @@ function ajustarMeta(delta: number) {
         @input="emit('update:titulo', ($event.target as HTMLInputElement).value)"
         type="text"
         placeholder="Ex: Truco de Sexta, Pelada..."
-        class="w-full px-3.5 py-2.5 rounded-xl bg-[#1e1a17] border border-[#332c27] focus:border-amber-400 text-[#faf6f0] placeholder-[#b5a898]/60 fonte-display text-xl font-extrabold focus:outline-none"
+        class="w-full px-3.5 lg:px-5 py-2.5 lg:py-3.5 rounded-xl lg:rounded-2xl bg-[#1e1a17] border border-[#332c27] focus:border-amber-400 text-[#faf6f0] placeholder-[#b5a898]/60 fonte-display text-xl lg:text-2xl font-extrabold focus:outline-none"
       />
     </div>
 
     <!-- Controles de Passo e Meta (1 coluna no mobile compacto, 2 colunas em telas >= 480px) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-5">
       <!-- Soma por toque -->
-      <div class="space-y-2">
+      <div class="space-y-2 lg:space-y-2.5">
         <div class="flex items-center justify-between">
-          <label for="campo-passo" class="text-xs font-bold text-[#b5a898]">
+          <label for="campo-passo" class="text-xs lg:text-sm font-bold text-[#b5a898]">
             De quantos em quantos?
           </label>
-          <div class="flex gap-1">
+          <div class="flex gap-1 lg:gap-1.5">
             <button
               v-for="p in [1, 2, 3, 5]"
               :key="p"
               type="button"
               @click="emit('update:passoPontos', p)"
               :class="[
-                'px-2 py-0.5 rounded-md numeral-placar text-xs font-extrabold cursor-pointer',
+                'px-2 lg:px-3 py-0.5 lg:py-1 rounded-md lg:rounded-lg numeral-placar text-xs lg:text-sm font-extrabold cursor-pointer',
                 passoPontos === p
                   ? 'bg-amber-400 text-amber-950'
                   : 'bg-[#1e1a17] text-[#b5a898]',
@@ -81,14 +81,14 @@ function ajustarMeta(delta: number) {
           </div>
         </div>
 
-        <div class="flex items-center justify-between bg-[#1e1a17] border border-[#332c27] rounded-xl p-1.5">
+        <div class="flex items-center justify-between bg-[#1e1a17] border border-[#332c27] rounded-xl lg:rounded-2xl p-1.5 lg:p-2.5">
           <button
             type="button"
             @click="ajustarPasso(-1)"
-            class="w-11 h-11 rounded-lg bg-[#2a2420] active:scale-95 text-[#faf6f0] flex items-center justify-center shrink-0 cursor-pointer"
+            class="w-11 h-11 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-[#2a2420] hover:bg-[#332c27] active:scale-95 text-[#faf6f0] flex items-center justify-center shrink-0 cursor-pointer"
             aria-label="Diminuir passo"
           >
-            <Minus class="w-4 h-4" />
+            <Minus class="w-4 h-4 lg:w-5 lg:h-5" />
           </button>
           <input
             id="campo-passo"
@@ -96,33 +96,33 @@ function ajustarMeta(delta: number) {
             @input="emit('update:passoPontos', Math.max(1, Number(($event.target as HTMLInputElement).value) || 1))"
             type="number"
             min="1"
-            class="flex-1 min-w-0 bg-transparent text-center numeral-placar text-2xl font-extrabold text-amber-400 focus:outline-none"
+            class="flex-1 min-w-0 bg-transparent text-center numeral-placar text-2xl lg:text-4xl font-extrabold text-amber-400 focus:outline-none"
           />
           <button
             type="button"
             @click="ajustarPasso(1)"
-            class="w-11 h-11 rounded-lg bg-[#2a2420] active:scale-95 text-[#faf6f0] flex items-center justify-center shrink-0 cursor-pointer"
+            class="w-11 h-11 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-[#2a2420] hover:bg-[#332c27] active:scale-95 text-[#faf6f0] flex items-center justify-center shrink-0 cursor-pointer"
             aria-label="Aumentar passo"
           >
-            <Plus class="w-4 h-4" />
+            <Plus class="w-4 h-4 lg:w-5 lg:h-5" />
           </button>
         </div>
       </div>
 
       <!-- Pontos para vencer -->
-      <div class="space-y-2">
+      <div class="space-y-2 lg:space-y-2.5">
         <div class="flex items-center justify-between">
-          <label for="campo-meta" class="text-xs font-bold text-[#b5a898]">
+          <label for="campo-meta" class="text-xs lg:text-sm font-bold text-[#b5a898]">
             Quantos pontos vence?
           </label>
-          <div class="flex gap-1">
+          <div class="flex gap-1 lg:gap-1.5">
             <button
               v-for="m in [12, 15, 21, 100]"
               :key="m"
               type="button"
               @click="emit('update:pontosVitoria', m)"
               :class="[
-                'px-2 py-0.5 rounded-md numeral-placar text-xs font-extrabold cursor-pointer',
+                'px-2 lg:px-3 py-0.5 lg:py-1 rounded-md lg:rounded-lg numeral-placar text-xs lg:text-sm font-extrabold cursor-pointer',
                 pontosVitoria === m
                   ? 'bg-amber-400 text-amber-950'
                   : 'bg-[#1e1a17] text-[#b5a898]',
@@ -133,14 +133,14 @@ function ajustarMeta(delta: number) {
           </div>
         </div>
 
-        <div class="flex items-center justify-between bg-[#1e1a17] border border-[#332c27] rounded-xl p-1.5">
+        <div class="flex items-center justify-between bg-[#1e1a17] border border-[#332c27] rounded-xl lg:rounded-2xl p-1.5 lg:p-2.5">
           <button
             type="button"
             @click="ajustarMeta(-1)"
-            class="w-11 h-11 rounded-lg bg-[#2a2420] active:scale-95 text-[#faf6f0] flex items-center justify-center shrink-0 cursor-pointer"
+            class="w-11 h-11 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-[#2a2420] hover:bg-[#332c27] active:scale-95 text-[#faf6f0] flex items-center justify-center shrink-0 cursor-pointer"
             aria-label="Diminuir meta"
           >
-            <Minus class="w-4 h-4" />
+            <Minus class="w-4 h-4 lg:w-5 lg:h-5" />
           </button>
           <input
             id="campo-meta"
@@ -148,43 +148,43 @@ function ajustarMeta(delta: number) {
             @input="emit('update:pontosVitoria', Math.max(1, Number(($event.target as HTMLInputElement).value) || 1))"
             type="number"
             min="1"
-            class="flex-1 min-w-0 bg-transparent text-center numeral-placar text-2xl font-extrabold text-[#faf6f0] focus:outline-none"
+            class="flex-1 min-w-0 bg-transparent text-center numeral-placar text-2xl lg:text-4xl font-extrabold text-[#faf6f0] focus:outline-none"
           />
           <button
             type="button"
             @click="ajustarMeta(1)"
-            class="w-11 h-11 rounded-lg bg-[#2a2420] active:scale-95 text-[#faf6f0] flex items-center justify-center shrink-0 cursor-pointer"
+            class="w-11 h-11 lg:w-14 lg:h-14 rounded-lg lg:rounded-xl bg-[#2a2420] hover:bg-[#332c27] active:scale-95 text-[#faf6f0] flex items-center justify-center shrink-0 cursor-pointer"
             aria-label="Aumentar meta"
           >
-            <Plus class="w-4 h-4" />
+            <Plus class="w-4 h-4 lg:w-5 lg:h-5" />
           </button>
         </div>
       </div>
     </div>
 
     <!-- Atalhos extras numa linha simples -->
-    <div class="space-y-2">
+    <div class="space-y-2 lg:space-y-2.5">
       <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-[#b5a898]">
+        <span class="text-xs lg:text-sm font-bold text-[#b5a898]">
           Atalhos de pontos extras no quadrado
         </span>
         <button
           v-if="atalhosExtras.length > 0"
           type="button"
           @click="emit('update:atalhosExtras', [])"
-          class="text-xs font-bold text-amber-400 cursor-pointer"
+          class="text-xs lg:text-sm font-bold text-amber-400 cursor-pointer"
         >
           Desativar
         </button>
       </div>
-      <div class="flex flex-wrap gap-1.5">
+      <div class="flex flex-wrap gap-1.5 lg:gap-2">
         <button
           v-for="valor in opcoesAtalhos"
           :key="valor"
           type="button"
           @click="alternarAtalho(valor)"
           :class="[
-            'min-h-[36px] px-3 py-1 rounded-lg numeral-placar text-xs font-extrabold border transition cursor-pointer',
+            'min-h-[36px] lg:min-h-[44px] px-3 lg:px-4 py-1 lg:py-2 rounded-lg lg:rounded-xl numeral-placar text-xs lg:text-sm font-extrabold border transition cursor-pointer',
             atalhosExtras.includes(valor)
               ? 'bg-amber-400 text-amber-950 border-amber-300'
               : 'bg-[#1e1a17] text-[#b5a898] border-[#332c27]',

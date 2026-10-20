@@ -80,7 +80,7 @@ function iniciarJogo() {
 </script>
 
 <template>
-  <div class="w-full max-w-2xl mx-auto px-3 sm:px-5 pt-4 pb-28 space-y-5">
+  <div class="w-full px-3 sm:px-6 lg:px-10 xl:px-14 pt-4 lg:pt-6 pb-28 lg:pb-32 space-y-5 lg:space-y-7">
     <SeletorPredefinicoes
       :predefinicoes="PREDEFINICOES_JOGO"
       :predefinicao-selecionada-id="predefinicaoSelecionadaId"
@@ -102,18 +102,16 @@ function iniciarJogo() {
       v-model:tamanho-mesa="tamanhoMesa"
     />
 
-    <!-- Botão Fixo na Base para Alcance do Polegar no Mobile -->
-    <div class="fixed bottom-0 inset-x-0 z-20 bg-[#12100e]/95 border-t border-[#332c27] p-3">
-      <div class="max-w-2xl mx-auto">
-        <button
-          type="button"
-          @click="iniciarJogo"
-          class="w-full min-h-[52px] py-3 px-6 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-[0.99] text-amber-950 fonte-display font-extrabold text-xl flex items-center justify-center gap-2 transition cursor-pointer"
-        >
-          <Play class="w-5 h-5 fill-current" />
-          <span>COMEÇAR PARTIDA</span>
-        </button>
-      </div>
+    <!-- Botão Fixo na Base ocupando a largura total com padding responsivo -->
+    <div class="fixed bottom-0 inset-x-0 z-20 bg-[#12100e]/95 border-t border-[#332c27] px-3 sm:px-6 lg:px-10 xl:px-14 py-3 lg:py-4">
+      <button
+        type="button"
+        @click="iniciarJogo"
+        class="w-full min-h-[52px] lg:min-h-[60px] py-3 lg:py-3.5 px-6 rounded-xl lg:rounded-2xl bg-amber-400 hover:bg-amber-300 active:scale-[0.99] text-amber-950 fonte-display font-extrabold text-xl lg:text-2xl flex items-center justify-center gap-2 lg:gap-2.5 transition cursor-pointer"
+      >
+        <Play class="w-5 h-5 lg:w-6 lg:h-6 fill-current" />
+        <span>COMEÇAR PARTIDA</span>
+      </button>
     </div>
   </div>
 </template>

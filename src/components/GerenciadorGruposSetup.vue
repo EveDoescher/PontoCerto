@@ -72,29 +72,29 @@ function alternarCorGrupo(index: number) {
 </script>
 
 <template>
-  <section class="space-y-3 pt-4 border-t border-[#332c27]">
+  <section class="space-y-3 lg:space-y-4 pt-4 lg:pt-6 border-t border-[#332c27]">
     <div class="flex items-center justify-between gap-2">
-      <h2 class="fonte-display text-xl font-extrabold text-[#faf6f0]">
+      <h2 class="fonte-display text-xl lg:text-2xl font-extrabold text-[#faf6f0]">
         Grupos ({{ grupos.length }})
       </h2>
 
       <button
         type="button"
         @click="adicionarGrupo"
-        class="min-h-[38px] flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-400 text-amber-950 font-black text-xs cursor-pointer"
+        class="min-h-[38px] lg:min-h-[46px] flex items-center gap-1.5 lg:gap-2 px-3.5 lg:px-5 py-1.5 lg:py-2.5 rounded-xl bg-amber-400 text-amber-950 font-black text-xs lg:text-sm cursor-pointer"
       >
-        <Plus class="w-4 h-4 stroke-[2.5]" />
+        <Plus class="w-4 h-4 lg:w-5 lg:h-5 stroke-[2.5]" />
         <span>Adicionar Grupo</span>
       </button>
     </div>
 
-    <!-- Lista de Grupos (1 coluna no celular, 2 no PC) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+    <!-- Lista de Grupos (1 coluna no celular, 2 no PC ocupando a largura total) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-4">
       <div
         v-for="(grupo, idx) in grupos"
         :key="idx"
         :class="[
-          'flex items-center gap-2 px-3 py-2 rounded-xl text-white border',
+          'flex items-center gap-2 lg:gap-3 px-3 lg:px-4 py-2 lg:py-3.5 rounded-xl lg:rounded-2xl text-white border',
           obterTemaCor(grupo.cor).gradiente,
           obterTemaCor(grupo.cor).borda,
         ]"
@@ -103,14 +103,14 @@ function alternarCorGrupo(index: number) {
           type="button"
           @click="alternarCorGrupo(idx)"
           title="Trocar cor do grupo"
-          class="w-9 h-9 rounded-lg bg-black/25 hover:bg-black/40 flex items-center justify-center text-white shrink-0 cursor-pointer"
+          class="w-9 h-9 lg:w-11 lg:h-11 rounded-lg lg:rounded-xl bg-black/25 hover:bg-black/40 flex items-center justify-center text-white shrink-0 cursor-pointer"
         >
-          <Palette class="w-4 h-4" />
+          <Palette class="w-4 h-4 lg:w-5 lg:h-5" />
         </button>
 
         <Icon
           :icon="obterNaipePorIndice(idx)"
-          class="w-4 h-4 text-white/75 shrink-0"
+          class="w-4 h-4 lg:w-5 lg:h-5 text-white/75 shrink-0"
           aria-hidden="true"
         />
 
@@ -120,7 +120,7 @@ function alternarCorGrupo(index: number) {
           type="text"
           :aria-label="`Nome do grupo ${idx + 1}`"
           :placeholder="obterNomePadraoGrupo(idx)"
-          class="flex-1 min-w-0 bg-transparent text-white placeholder-white/60 fonte-display font-extrabold text-lg focus:outline-none"
+          class="flex-1 min-w-0 bg-transparent text-white placeholder-white/60 fonte-display font-extrabold text-lg lg:text-2xl focus:outline-none"
         />
 
         <button
@@ -128,21 +128,21 @@ function alternarCorGrupo(index: number) {
           type="button"
           @click="removerGrupo(idx)"
           title="Remover grupo"
-          class="w-9 h-9 rounded-lg bg-black/20 hover:bg-black/40 flex items-center justify-center text-white/80 hover:text-white shrink-0 cursor-pointer"
+          class="w-9 h-9 lg:w-11 lg:h-11 rounded-lg lg:rounded-xl bg-black/20 hover:bg-black/40 flex items-center justify-center text-white/80 hover:text-white shrink-0 cursor-pointer"
         >
-          <Trash2 class="w-4 h-4" />
+          <Trash2 class="w-4 h-4 lg:w-5 lg:h-5" />
         </button>
       </div>
     </div>
 
     <!-- Chave Simples: Todos na tela vs Quem ganha fica -->
-    <div class="space-y-2.5 pt-2">
-      <div class="grid grid-cols-2 gap-1.5 bg-[#1e1a17] p-1 rounded-xl border border-[#332c27]">
+    <div class="space-y-2.5 lg:space-y-3 pt-2">
+      <div class="grid grid-cols-2 gap-1.5 lg:gap-2 bg-[#1e1a17] p-1 lg:p-1.5 rounded-xl lg:rounded-2xl border border-[#332c27]">
         <button
           type="button"
           @click="emit('update:modo', 'todos')"
           :class="[
-            'min-h-[40px] py-2 px-2.5 rounded-lg text-xs font-extrabold transition cursor-pointer',
+            'min-h-[40px] lg:min-h-[50px] py-2 lg:py-3 px-2.5 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-extrabold transition cursor-pointer',
             modo === 'todos'
               ? 'bg-amber-400 text-amber-950'
               : 'text-[#b5a898] hover:text-[#faf6f0]',
@@ -155,7 +155,7 @@ function alternarCorGrupo(index: number) {
           type="button"
           @click="emit('update:modo', 'fila')"
           :class="[
-            'min-h-[40px] py-2 px-2.5 rounded-lg text-xs font-extrabold transition cursor-pointer',
+            'min-h-[40px] lg:min-h-[50px] py-2 lg:py-3 px-2.5 lg:px-4 rounded-lg lg:rounded-xl text-xs lg:text-sm font-extrabold transition cursor-pointer',
             modo === 'fila'
               ? 'bg-amber-400 text-amber-950'
               : 'text-[#b5a898] hover:text-[#faf6f0]',
@@ -165,29 +165,29 @@ function alternarCorGrupo(index: number) {
         </button>
       </div>
 
-      <div v-if="modo === 'fila'" class="space-y-2 pt-1 text-xs">
+      <div v-if="modo === 'fila'" class="space-y-2 lg:space-y-3 pt-1 text-xs lg:text-sm">
         <!-- Botão Como Funciona (!) antes de quantos grupos na mesa por vez -->
         <div>
           <button
             type="button"
             @click="explicacaoFilaAberta = true"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-amber-400 font-extrabold text-xs cursor-pointer transition"
+            class="inline-flex items-center gap-1.5 lg:gap-2 px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg lg:rounded-xl bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-amber-400 font-extrabold text-xs lg:text-sm cursor-pointer transition"
           >
-            <CircleAlert class="w-4 h-4 shrink-0" />
+            <CircleAlert class="w-4 h-4 lg:w-5 lg:h-5 shrink-0" />
             <span>Como Funciona</span>
           </button>
         </div>
 
         <div class="flex flex-wrap items-center justify-between gap-2">
           <span class="text-[#b5a898] font-bold">Quantos grupos na mesa por vez?</span>
-          <div class="flex gap-1.5">
+          <div class="flex gap-1.5 lg:gap-2">
             <button
               v-for="n in [2, 3, 4]"
               :key="n"
               type="button"
               @click="emit('update:tamanhoMesa', n)"
               :class="[
-                'px-3 py-1.5 rounded-lg numeral-placar font-extrabold border cursor-pointer',
+                'px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg lg:rounded-xl numeral-placar font-extrabold border cursor-pointer',
                 tamanhoMesa === n
                   ? 'bg-amber-400 text-amber-950 border-amber-300'
                   : 'bg-[#1e1a17] text-[#b5a898] border-[#332c27]',

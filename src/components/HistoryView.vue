@@ -186,7 +186,7 @@ function confirmarExclusao() {
 </script>
 
 <template>
-  <div class="w-full max-w-2xl mx-auto px-3 sm:px-5 py-4 pb-20 space-y-4">
+  <div class="w-full px-3 sm:px-6 lg:px-10 xl:px-14 py-4 lg:py-6 pb-20 space-y-4 lg:space-y-6">
     <!-- Input oculto para importação de JSON -->
     <input
       ref="inputArquivoRef"
@@ -196,19 +196,19 @@ function confirmarExclusao() {
       @change="aoSelecionarArquivo"
     />
 
-    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-[#332c27]">
-      <h2 class="fonte-display text-2xl font-extrabold text-[#faf6f0]">
+    <div class="flex flex-wrap items-center justify-between gap-2 pb-3 lg:pb-4 border-b border-[#332c27]">
+      <h2 class="fonte-display text-2xl lg:text-3xl font-extrabold text-[#faf6f0]">
         Histórico Local ({{ store.sessoes.value.length }})
       </h2>
 
-      <div class="flex flex-wrap items-center gap-1.5">
+      <div class="flex flex-wrap items-center gap-1.5 lg:gap-2">
         <button
           type="button"
           @click="acionarSeletorArquivo"
           title="Importar histórico salvo (.json)"
-          class="min-h-[36px] flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-[#b5a898] hover:text-[#faf6f0] text-xs font-bold cursor-pointer transition"
+          class="min-h-[36px] lg:min-h-[44px] flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-4 py-1.5 lg:py-2 rounded-xl bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-[#b5a898] hover:text-[#faf6f0] text-xs lg:text-sm font-bold cursor-pointer transition"
         >
-          <Upload class="w-3.5 h-3.5 text-amber-400" />
+          <Upload class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-amber-400" />
           <span>Importar</span>
         </button>
 
@@ -217,9 +217,9 @@ function confirmarExclusao() {
           type="button"
           @click="baixarHistorico"
           title="Baixar cópia do histórico (.json)"
-          class="min-h-[36px] flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-[#b5a898] hover:text-[#faf6f0] text-xs font-bold cursor-pointer transition"
+          class="min-h-[36px] lg:min-h-[44px] flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-4 py-1.5 lg:py-2 rounded-xl bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-[#b5a898] hover:text-[#faf6f0] text-xs lg:text-sm font-bold cursor-pointer transition"
         >
-          <Download class="w-3.5 h-3.5 text-amber-400" />
+          <Download class="w-3.5 h-3.5 lg:w-4 lg:h-4 text-amber-400" />
           <span>Baixar</span>
         </button>
 
@@ -227,9 +227,9 @@ function confirmarExclusao() {
           v-if="store.sessoes.value.length > 0"
           type="button"
           @click="abrirModalExcluirTudo"
-          class="min-h-[36px] flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-amber-400 text-xs font-extrabold cursor-pointer transition"
+          class="min-h-[36px] lg:min-h-[44px] flex items-center gap-1.5 lg:gap-2 px-3 lg:px-4 py-1.5 lg:py-2 rounded-xl bg-[#1e1a17] hover:bg-[#2a2420] border border-[#332c27] text-amber-400 text-xs lg:text-sm font-extrabold cursor-pointer transition"
         >
-          <Trash2 class="w-3.5 h-3.5" />
+          <Trash2 class="w-3.5 h-3.5 lg:w-4 lg:h-4" />
           <span>Limpar histórico</span>
         </button>
       </div>
@@ -238,7 +238,7 @@ function confirmarExclusao() {
     <!-- Aviso rápido de feedback (importação / erro) -->
     <div
       v-if="mensagemFeedback"
-      class="px-3.5 py-2.5 rounded-xl bg-[#1e1a17] border border-[#332c27] text-xs font-bold flex items-center justify-between gap-2"
+      class="px-3.5 lg:px-5 py-2.5 lg:py-3.5 rounded-xl bg-[#1e1a17] border border-[#332c27] text-xs lg:text-sm font-bold flex items-center justify-between gap-2"
       :class="mensagemFeedback.erro ? 'text-amber-400' : 'text-[#faf6f0]'"
     >
       <span>{{ mensagemFeedback.texto }}</span>
@@ -247,23 +247,23 @@ function confirmarExclusao() {
         @click="mensagemFeedback = null"
         class="text-[#b5a898] hover:text-[#faf6f0] cursor-pointer"
       >
-        <X class="w-3.5 h-3.5" />
+        <X class="w-3.5 h-3.5 lg:w-4 lg:h-4" />
       </button>
     </div>
 
     <div
       v-if="store.sessoes.value.length === 0"
-      class="py-12 text-center space-y-4"
+      class="py-12 lg:py-20 text-center space-y-4 lg:space-y-5"
     >
-      <p class="text-sm text-[#b5a898]">
+      <p class="text-sm lg:text-base text-[#b5a898]">
         Nenhuma partida salva neste aparelho ainda.
       </p>
       <button
         type="button"
         @click="emit('novo-jogo')"
-        class="min-h-[46px] inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-400 text-amber-950 font-black text-xs cursor-pointer"
+        class="min-h-[46px] lg:min-h-[54px] inline-flex items-center gap-2 lg:gap-2.5 px-5 lg:px-7 py-2.5 lg:py-3 rounded-xl bg-amber-400 text-amber-950 font-black text-xs lg:text-sm cursor-pointer"
       >
-        <PlusCircle class="w-4 h-4" />
+        <PlusCircle class="w-4 h-4 lg:w-5 lg:h-5" />
         <span>Configurar Nova Mesa</span>
       </button>
     </div>
