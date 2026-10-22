@@ -15,7 +15,7 @@ const emit = defineEmits<{
 }>()
 
 const store = useGameStore()
-const { tocarSomVitoria } = useAudioVitoria()
+const { tocarSomPonto, tocarSomVitoria } = useAudioVitoria()
 const sessao = computed(() => store.sessaoAtual.value)
 
 const idAnimandoToque = ref<string | null>(null)
@@ -58,6 +58,7 @@ function aoAdicionarPontos(grupoId: string, deltaPersonalizado?: number) {
   if (typeof navigator !== 'undefined' && navigator.vibrate) {
     navigator.vibrate(20)
   }
+  tocarSomPonto()
   dispararAnimacaoToque(grupoId)
   const { atingiuMeta } = store.alterarPontos(grupoId, deltaPersonalizado)
   if (atingiuMeta) {

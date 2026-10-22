@@ -167,33 +167,33 @@ function aoTocarMenos(evento: MouseEvent) {
       </div>
 
       <!-- Base do Quadrado: Controles responsivos que quebram linha se houver muitos atalhos -->
-      <div class="relative z-10 space-y-2" @click.stop>
+      <div class="relative z-10 space-y-2.5" @click.stop>
         <!-- Atalhos opcionais (+3, +6, +9, +12) -->
         <div
           v-if="atalhosVisiveis.length > 0"
-          class="flex flex-wrap items-center justify-center gap-1.5"
+          class="flex flex-wrap items-center justify-center gap-2"
         >
           <button
             v-for="extra in atalhosVisiveis"
             :key="extra"
             type="button"
             @click.stop="aoTocarAtalhoExtra($event, extra)"
-            class="min-h-[36px] px-3 py-1 rounded-xl bg-black/35 hover:bg-black/50 active:scale-95 text-white numeral-placar font-extrabold text-xs border border-white/20 transition cursor-pointer"
+            class="flex-1 min-w-[60px] min-h-[48px] sm:min-h-[52px] px-3.5 py-2.5 rounded-xl bg-black/40 hover:bg-black/55 active:scale-95 text-white numeral-placar font-extrabold text-base sm:text-lg border border-white/20 flex items-center justify-center transition cursor-pointer"
           >
             +{{ extra }}
           </button>
         </div>
 
-        <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center justify-between gap-2.5">
           <!-- Diminuir ponto caso toque sem querer -->
           <button
             type="button"
             @click.stop="aoTocarMenos($event)"
             :disabled="pontuacao <= 0"
-            class="min-h-[42px] px-3.5 py-1.5 rounded-xl bg-black/35 hover:bg-black/50 active:scale-95 disabled:opacity-25 text-white numeral-placar font-extrabold text-sm border border-white/15 flex items-center justify-center gap-1 transition cursor-pointer"
+            class="flex-1 min-h-[52px] sm:min-h-[56px] px-4 py-2.5 rounded-xl bg-black/40 hover:bg-black/55 active:scale-95 disabled:opacity-25 text-white numeral-placar font-extrabold text-lg sm:text-xl border border-white/15 flex items-center justify-center gap-1.5 transition cursor-pointer"
             title="Diminuir ponto"
           >
-            <Minus class="w-4 h-4 stroke-[2.5]" />
+            <Minus class="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.75]" />
             <span>{{ passoPontos }}</span>
           </button>
 
@@ -201,9 +201,9 @@ function aoTocarMenos(evento: MouseEvent) {
           <button
             type="button"
             @click.stop="aoTocarMais($event)"
-            class="min-h-[42px] px-3.5 py-1.5 rounded-xl bg-white/20 hover:bg-white/30 active:scale-95 text-white numeral-placar font-extrabold text-sm border border-white/25 flex items-center justify-center gap-1 transition cursor-pointer"
+            class="flex-1 min-h-[52px] sm:min-h-[56px] px-4 py-2.5 rounded-xl bg-white/25 hover:bg-white/35 active:scale-95 text-white numeral-placar font-extrabold text-lg sm:text-xl border border-white/30 flex items-center justify-center gap-1.5 transition cursor-pointer"
           >
-            <Plus class="w-4 h-4 stroke-[3]" />
+            <Plus class="w-5 h-5 sm:w-6 sm:h-6 stroke-[3]" />
             <span>{{ passoPontos }}</span>
           </button>
         </div>

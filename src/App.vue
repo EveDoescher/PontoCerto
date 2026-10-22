@@ -5,6 +5,9 @@ import SetupGameView from './components/SetupGameView.vue'
 import ScoreboardView from './components/ScoreboardView.vue'
 import HistoryView from './components/HistoryView.vue'
 import { useGameStore } from './composables/useGameStore'
+import { useWakeLock } from './composables/useWakeLock'
+
+useWakeLock()
 
 const store = useGameStore()
 const abaAtiva = ref<AbaNavegacao>(store.sessaoAtual.value ? 'placar' : 'configurar')

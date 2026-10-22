@@ -177,14 +177,14 @@ function ajustarMeta(delta: number) {
           Desativar
         </button>
       </div>
-      <div class="flex flex-wrap gap-1.5 lg:gap-2">
+      <div class="flex flex-wrap gap-2">
         <button
           v-for="valor in opcoesAtalhos"
           :key="valor"
           type="button"
           @click="alternarAtalho(valor)"
           :class="[
-            'min-h-[36px] lg:min-h-[44px] px-3 lg:px-4 py-1 lg:py-2 rounded-lg lg:rounded-xl numeral-placar text-xs lg:text-sm font-extrabold border transition cursor-pointer',
+            'min-h-[44px] lg:min-h-[48px] px-4 lg:px-5 py-2 rounded-xl numeral-placar text-sm lg:text-base font-extrabold border transition cursor-pointer',
             atalhosExtras.includes(valor)
               ? 'bg-amber-400 text-amber-950 border-amber-300'
               : 'bg-[#1e1a17] text-[#b5a898] border-[#332c27]',

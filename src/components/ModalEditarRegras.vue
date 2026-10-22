@@ -123,14 +123,14 @@ function salvar() {
           <span class="block text-xs font-bold text-[#b5a898] mb-1.5">
             Atalhos extras no quadrado
           </span>
-          <div class="flex flex-wrap gap-1.5">
+          <div class="flex flex-wrap gap-2">
             <button
               v-for="v in opcoesAtalhos"
               :key="v"
               type="button"
               @click="alternarAtalho(v)"
               :class="[
-                'min-h-[36px] px-3 py-1 rounded-full numeral-placar text-xs font-extrabold transition cursor-pointer',
+                'min-h-[44px] px-4 py-2 rounded-xl numeral-placar text-sm font-extrabold transition cursor-pointer',
                 atalhos.includes(v)
                   ? 'bg-amber-400 text-amber-950'
                   : 'bg-[#12100e] border border-[#332c27] text-[#b5a898]',

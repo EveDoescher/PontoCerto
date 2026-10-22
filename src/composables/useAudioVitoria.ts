@@ -2,6 +2,7 @@ import { ref } from 'vue'
 
 const somAtivo = ref<boolean>(true)
 let instanciaAudio: HTMLAudioElement | null = null
+let instanciaAudioPonto: HTMLAudioElement | null = null
 
 function obterAudio(): HTMLAudioElement | null {
   if (typeof window === 'undefined') return null
@@ -12,7 +13,30 @@ function obterAudio(): HTMLAudioElement | null {
   return instanciaAudio
 }
 
+function obterAudioPonto(): HTMLAudioElement | null {
+  if (typeof window === 'undefined') return null
+  if (!instanciaAudioPonto) {
+    instanciaAudioPonto = new Audio('/pop_click.mp3')
+    instanciaAudioPonto.preload = 'auto'
+  }
+  return instanciaAudioPonto
+}
+
 export function useAudioVitoria() {
+  function tocarSomPonto() {
+    if (!somAtivo.value) return
+    try {
+      const audio = obterAudioPonto()
+      if (!audio) return
+      audio.currentTime = 0
+      audio.play().catch((err) => {
+        console.warn('Não foi possível reproduzir o áudio de ponto:', err)
+      })
+    } catch (e) {
+      console.warn('Erro ao reproduzir áudio de ponto:', e)
+    }
+  }
+
   function tocarSomVitoria() {
     if (!somAtivo.value) return
     try {
@@ -48,6 +72,7 @@ export function useAudioVitoria() {
 
   return {
     somAtivo,
+    tocarSomPonto,
     tocarSomVitoria,
     pararSomVitoria,
     alternarSom,
